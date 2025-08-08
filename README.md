@@ -1,42 +1,42 @@
 🚖 Projet DBT avec DuckDB — Analyse des trajets taxi NYC
 📝 Description du projet
 Ce projet utilise dbt (Data Build Tool) avec le moteur DuckDB pour transformer, nettoyer et analyser un dataset public des trajets de taxi jaunes à New York.
-L’objectif est de produire un modèle de données fiable et testé, prêt pour des analyses approfondies.
+L'objectif est de produire un modèle de données fiable et testé, prêt pour des analyses approfondies.
 
 📁 Structure du projet
-plaintext
+graphql
 Copier
 Modifier
 Projet_DBT/
 │
 ├── models/
 │   ├── taxi_trips/
-│   │   ├── sources.yml         # Définition des sources de données 
-│   │   ├── transform.sql       # Requête SQL pour transformation des données
-│   ├── schema.yml              # Définition des tests de qualité (tests dbt)
+│   │   ├── sources.yml           # Définition des sources de données
+│   │   ├── transform.sql         # Requête SQL pour transformation des données
+│   ├── schema.yml                # Définition des tests de qualité (dbt tests)
 │
 ├── tests/
-│   ├── Test_passenger_count.sql  # Tests SQL personnalisés 
+│   ├── Test_passenger_count.sql  # Tests SQL personnalisés (optionnel)
 │
-├── output/                     # Répertoire où peut se trouver la base DuckDB 
+├── output/                      # Répertoire pour base DuckDB ou résultats
 │
-├── packages.yml                # Dépendances dbt (vide ou avec packages externes)
-├── dbt_project.yml             # Configuration principale du projet dbt
-├── profiles.yml                # Configuration connexion DuckDB (hors dépôt en général)
-├── README.md                   
+├── packages.yml                 # Dépendances dbt (peut être vide)
+├── dbt_project.yml              # Configuration principale du projet dbt
+├── profiles.yml                 # Configuration de connexion DuckDB (généralement ignoré par git)
+├── README.md                   # Ce fichier
 🔍 Sources des données
-Le dataset principal est un fichier Parquet public hébergé à l’URL suivante :
+Dataset principal :
 https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet
 
-Il est défini dans models/taxi_trips/sources.yml pour être référencé dans dbt via la fonction source().
+Défini dans models/taxi_trips/sources.yml et référencé via la fonction source() dans dbt.
 
 🛠️ Technologies utilisées
-Technologie	Version utilisée / remarque
+Technologie	Version / Remarque
 dbt-core	1.10.7
 dbt-duckdb adapter	1.9.4
 DuckDB	v1.9.x
-Python	3.9+ (via environnement virtuel)
-PowerShell / CLI	Windows PowerShell utilisé pour commandes Git
+Python	3.9+ (environnement virtuel conseillé)
+PowerShell / CLI	Windows PowerShell utilisé pour Git
 
 ⚙️ Installation & utilisation
 1. Cloner le dépôt
@@ -50,17 +50,15 @@ bash
 Copier
 Modifier
 python -m venv venv
-.\venv\Scripts\activate  # Windows PowerShell
-# source venv/bin/activate  # macOS/Linux
-3. Installer dbt et adapter DuckDB
+.\venv\Scripts\activate    # Windows PowerShell
+# source venv/bin/activate  # macOS / Linux
+3. Installer dbt et l’adaptateur DuckDB
 bash
 Copier
 Modifier
 pip install dbt-core dbt-duckdb
-4. Configuration de la connexion DuckDB
-Dans le fichier profiles.yml (hors dépôt recommandé pour la sécurité), configurer le profil DuckDB pointant vers la base de données .db ou fichier Parquet.
-
-Exemple minimal pour DuckDB :
+4. Configurer la connexion DuckDB
+Dans le fichier profiles.yml (hors dépôt git recommandé pour la sécurité), configurez le profil dbt :
 
 yaml
 Copier
@@ -70,41 +68,41 @@ projet_dbt:
   outputs:
     dev:
       type: duckdb
-      path: output/transformed_data.db  # ou ':memory:' pour en mémoire
-5. Exécuter les modèles dbt
+      path: output/transformed_data.db  # ou ':memory:' pour base en mémoire
+5. Lancer la transformation
 bash
 Copier
 Modifier
 dbt run
-6. Lancer les tests dbt pour valider la qualité des données
+6. Lancer les tests de qualité
 bash
 Copier
 Modifier
 dbt test
-🧩 Modèle de transformation SQL clé (transform.sql)
-Nettoyage des données : suppression des trajets sans passagers, distances ou montants valides
+🧩 Modèle de transformation clé (transform.sql)
+Nettoyage des données (exclusion des trajets avec passagers, distance ou montant invalides)
 
 Calcul de la durée du trajet en minutes
 
-Transformation du type de paiement numérique en texte (Credit Card, Cash)
+Conversion des codes numériques de paiement en labels (ex. Credit Card, Cash)
 
 ✅ Tests et qualité des données
-Le projet inclut plusieurs tests dbt :
+Les tests inclus :
 
-accepted_values : vérifier que certaines colonnes prennent uniquement des valeurs autorisées (ex. payment_method)
+accepted_values : vérifie que certaines colonnes ont uniquement des valeurs autorisées (payment_method, passenger_count)
 
-not_null : s’assurer que des colonnes clés ne contiennent pas de valeurs nulles
+not_null : vérifie l’absence de valeurs nulles sur des colonnes critiques
 
-expression_is_true (tests personnalisés) : valider des règles métier (ex. trip_distance > 0)
+expression_is_true (tests personnalisés) : valide des contraintes métier (trip_distance > 0)
 
 🚩 Résolution des erreurs rencontrées
-Erreurs liées à des colonnes non trouvées (payment_method absente dans certains tests) : corrigées en ajustant la sélection des colonnes dans les modèles
+Erreurs dues à l’absence de colonnes (payment_method) dans certains tests : corrigées en ajustant les modèles
 
-Macro test_expression_is_true non trouvée : nécessité d’ajouter ou d’importer certains packages ou macros dbt
+Macro test_expression_is_true non trouvée : nécessité d’ajouter les macros ou packages manquants
 
-Configuration des remotes git absente : ajout du remote origin avant de pousser le projet sur GitHub
+Configuration du remote Git absente initialement : ajout de origin avant de pousser sur GitHub
 
-Gestion des conversions de fin de ligne (LF/CRLF) signalée par Git, mais non bloquante
+Avertissements LF/CRLF signalés par Git, non bloquants
 
 💻 Commandes Git pour mise en ligne
 bash
@@ -116,14 +114,14 @@ git commit -m "Initial commit projet DBT taxi NYC"
 git remote add origin https://github.com/SMagui/Projet_DBT.git
 git branch -M main
 git push -u origin main
-📚 Documentation & liens utiles
+📚 Documentation et liens utiles
 Documentation dbt
 
-DuckDB
+Documentation DuckDB
 
-TLC Taxi Trip Data
+Données TLC Taxi NYC
 
-dbt testing documentation
+Documentation des tests dbt
 
 👤 Auteur
 SMagui
