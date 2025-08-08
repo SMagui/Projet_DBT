@@ -1,4 +1,6 @@
-🚖 Projet DBT — Analyse des trajets taxi NYC avec DuckDB
+####🚖 Projet DBT — Analyse des trajets taxi NYC avec DuckDB#####
+
+
 Ce projet vise à transformer, nettoyer et analyser un dataset public des trajets de taxi jaunes à New York, en utilisant dbt (Data Build Tool) avec le moteur DuckDB.
 Il permet de structurer les données, garantir leur qualité via des tests, et préparer un modèle fiable pour analyses et visualisations.
 
