@@ -17,23 +17,33 @@ models:
       - name: trip_distance
         tests:
           - not_null
+          - dbt_expectations.expression_is_true:
+              expression: "trip_distance >= 0"
       - name: total_amount
         tests:
           - not_null
-      - name: payment_type
+          - dbt_expectations.expression_is_true:
+              expression: "total_amount >= 0"
+      - name: payment_method
         tests:
           - not_null
           - accepted_values:
-              values: [1, 2, 3, 4, 5, 6] # Assuming payment_type is numerical based on common taxi datasets
+              values: ['Credit Card', 'Cash']
       - name: trip_duration_minutes
         tests:
           - not_null
+          - dbt_expectations.expression_is_true:
+              expression: "trip_duration_minutes >= 0"
+      - name: store_and_fwd_flag
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Y', 'N']
+      - name: tip_amount
+        tests:
+          - not_null
+          - dbt_expectations.expression_is_true:
+              expression: "tip_amount >= 0"
     tests:
       - dbt_utils.expression_is_true:
           expression: "tpep_dropoff_datetime > tpep_pickup_datetime"
-      - dbt_expectations.expression_is_true:
-          expression: "trip_distance >= 0"
-      - dbt_expectations.expression_is_true:
-          expression: "total_amount >= 0"
-      - dbt_expectations.expression_is_true:
-          expression: "trip_duration_minutes >= 0"

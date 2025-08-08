@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: tlc_taxi_trips
+  - name: taxi_trips
     tables:
       - name: row_yellow_tripdata
         meta:
