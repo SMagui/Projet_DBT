@@ -1,13 +1,11 @@
-####🚖 Projet DBT — Analyse des trajets taxi NYC avec DuckDB#####
+🚖 Projet DBT — Analyse des trajets taxi NYC avec DuckDB
 
 
 Ce projet vise à transformer, nettoyer et analyser un dataset public des trajets de taxi jaunes à New York, en utilisant dbt (Data Build Tool) avec le moteur DuckDB.
 Il permet de structurer les données, garantir leur qualité via des tests, et préparer un modèle fiable pour analyses et visualisations.
 
 🗂️ Structure du projet
-graphql
-Copier
-Modifier
+
 Projet_DBT/
 ├── models/                # Modèles SQL dbt et définitions des sources
 │   ├── taxi_trips/
@@ -23,7 +21,10 @@ Projet_DBT/
 ├── dbt_project.yml        # Configuration projet dbt
 ├── profiles.yml           # Connexion DuckDB (exclu du dépôt recommandé)
 ├── README.md              # Ce fichier
+
+
 🎯 Objectifs du projet
+
 Utiliser dbt pour construire un pipeline de transformation et de nettoyage robuste
 
 Exploiter DuckDB comme moteur analytique léger et performant
@@ -33,12 +34,14 @@ Mettre en place des tests de qualité sur les données (not null, valeurs accept
 Préparer les données pour une analyse fiable et reproductible
 
 🔍 Données utilisées
+
 Dataset principal :
 yellow_tripdata_2024-01.parquet
 
 Données référencées dans models/taxi_trips/sources.yml et utilisées via source() dans dbt
 
 🧠 Transformations clés
+
 Nettoyage des trajets invalides (passager=0, distance ou montant non valides)
 
 Calcul de la durée du trajet en minutes
@@ -46,6 +49,7 @@ Calcul de la durée du trajet en minutes
 Conversion du type de paiement numérique en labels lisibles (ex: Carte de crédit, Espèces)
 
 ✅ Tests et qualité des données
+
 Test dbt	But
 accepted_values	Colonnes avec valeurs autorisées (ex: payment_method)
 not_null	Pas de valeurs nulles sur colonnes clés
@@ -62,6 +66,7 @@ DuckDB v1.9.x	Moteur analytique
 PowerShell/CLI	Commandes Git, gestion projet
 
 ⚙️ Installation & utilisation
+
 1. Cloner le dépôt
 bash
 Copier
@@ -86,17 +91,23 @@ projet_dbt:
     dev:
       type: duckdb
       path: output/transformed_data.db
+      
 4. Lancer la transformation
+   
 bash
 Copier
 Modifier
 dbt run
-5. Lancer les tests
+
+6. Lancer les tests
+   
 bash
 Copier
 Modifier
 dbt test
+
 💻 Commandes Git
+
 bash
 Copier
 Modifier
@@ -106,7 +117,9 @@ git commit -m "Initial commit projet DBT taxi NYC"
 git remote add origin https://github.com/SMagui/Projet_DBT.git
 git branch -M main
 git push -u origin main
+
 📝 Remarques
+
 La gestion des tests et des transformations assure un pipeline robuste et reproductible
 
 Les fichiers .yml et .sql sont modifiables pour étendre le modèle et les tests
@@ -114,6 +127,7 @@ Les fichiers .yml et .sql sont modifiables pour étendre le modèle et les tests
 La base DuckDB est légère, facile à déployer et rapide pour des analyses locales
 
 📚 Ressources utiles
+
 Documentation dbt
 
 DuckDB Documentation
