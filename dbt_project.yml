@@ -1,0 +1,19 @@
+name: 'projet_dbt'
+version: '1.0.0'
+profile: 'Projet_DBT'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  projet_dbt:
+    taxi_trips:
+      +materialized: view

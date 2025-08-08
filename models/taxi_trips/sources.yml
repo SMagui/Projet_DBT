@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: tlc_taxi_trips
+    tables:
+      - name: row_yellow_tripdata
+        meta:
+          external_location: 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet'
+          formatter: oldstyle
